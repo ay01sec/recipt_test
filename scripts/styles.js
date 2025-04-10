@@ -23,25 +23,37 @@ export default StyleSheet.create({
     alignItems: "center",
   },
 
+  buttonContainer:{
+    marginTop:20
+  },
+  
   titleContainer: {
-    flexDirection: 'row',
+    // flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    marginTop: 16,
-    marginBottom: 12,
-    paddingHorizontal: 16,
+    backgroundColor: '#A1CEDC', 
+    // gap: 6,
+    // marginTop: 16,
+    // marginBottom: 12,
+    // padding: 16,
+    // backgroundColor: '#A1CEDC',  
+    margin: 40
   },
 
   stepContainer: {
-    gap: 8,
+    // gap: 8,
+    alignItems: 'center',
+    width:260,
     marginBottom: 16,
     paddingHorizontal: 16,
+    borderRadius: 10
   },
 
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 16,
+    // marginBottom: 16,
+    textAlign: 'center',
+    padding: 10
   },
 
   input: {

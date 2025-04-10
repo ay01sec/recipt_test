@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl, SafeAreaView} from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl, SafeAreaView, ScrollView} from 'react-native';
 import { useAuth } from '@/context/AuthContext';
 import { db } from '@/scripts/firebase';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
@@ -58,10 +58,10 @@ export default function HistoryScreen() {
     <TouchableOpacity
       style={styles.card}
       onPress={() => router.push({ pathname: '/pdfview', params: { url: item.downloadUrl } })}>
-      <Text style={styles.cardTitle}>領収書 No.{item.no ?? '-'} - {item.recipientName}</Text>
+      <Text style={styles.cardTitle}>領収書 No.{item.no ?? '-'} - {item.recipientName}様</Text>
       <Text>金額: ¥{item.totalAmount.toLocaleString()}</Text>
       <Text>日付: {item.issuedDate}</Text>
-      <Text>カテゴリ: {item.category ?? '未分類'} / ステータス: {item.status ?? '発行済み'}</Text>
+      {/* <Text>カテゴリ: {item.category ?? '未分類'} / ステータス: {item.status ?? '発行済み'}</Text> */}
     </TouchableOpacity>
   );
 
@@ -70,24 +70,29 @@ export default function HistoryScreen() {
   }
 
   return (
-    <SafeAreaView style={{ height: 100, flex: 1, backgroundColor: '#A1CEDC', paddingTop: 30 }}>
+    <SafeAreaView style={{ backgroundColor: '#A1CEDC' }}>
       {loading ? (
         <ActivityIndicator size="large" color="#999" style={{ marginTop: 20 }} />
       ) : (
-        <FlatList
-          data={receipts}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={renderItem}
-          contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 100 }}
-          ListHeaderComponent={
-            <ThemedView style={{ marginBottom: 20 }}>
-              <ThemedText type="title">作成済み領収書</ThemedText>
-            </ThemedView>
-          }
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-          ListEmptyComponent={<Text style={{ padding: 20 }}>領収書が見つかりません</Text>}
-        />
+          <FlatList
+            data={receipts}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={renderItem}
+            contentContainerStyle={{ paddingHorizontal: 50, paddingBottom: 100 }}
+            ListHeaderComponent={
+              <ThemedView style={{ marginTop: 20, marginBottom: 20 }}>
+                <ThemedText type="title" style={{ backgroundColor: '#A1CEDC', textAlign: 'center',  padding: 5}}>作成済み領収書</ThemedText>
+              </ThemedView>
+            }
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+            ListEmptyComponent={<Text style={{ padding: 20 }}>領収書が見つかりません</Text>}
+          />
       )}
     </SafeAreaView>
+
+
+    // <SafeAreaView style={{ height: 100, flex: 1, backgroundColor: '#A1CEDC', paddingTop: 30 }}>
+      
+    // </SafeAreaView>
   );
 }
