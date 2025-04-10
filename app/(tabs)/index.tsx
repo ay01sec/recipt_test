@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, TextInput, Text, Button, Image, Alert, Modal, ActivityIndicator, Pressable, SafeAreaView } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, TextInput, Text, Button, Image, Alert, Modal, ActivityIndicator, Pressable, SafeAreaView, Keyboard } from 'react-native';
 import { useAuth } from '@/context/AuthContext';
 import { db, storage } from '@/scripts/firebase';
 import { collection, addDoc, getDocs, query, where, serverTimestamp, doc, getDoc } from 'firebase/firestore';
@@ -13,6 +13,7 @@ import * as Print from 'expo-print';
 import { format } from 'date-fns';
 import styles from '@/scripts/styles';
 import { WebView } from 'react-native-webview'; // 冒頭に追加
+import { useFocusEffect } from '@react-navigation/native';
 
 interface SettingRow {
   storeName: string;
@@ -22,7 +23,7 @@ interface SettingRow {
   invoiceNumber: string;
   logoUri: string;
   sealUri: string;
-  noteOptions?: string[];
+  defaultNote: string;
 }
 
 const fallbackSettings: SettingRow = {
@@ -33,7 +34,7 @@ const fallbackSettings: SettingRow = {
   invoiceNumber: '',
   logoUri: '',
   sealUri: '',
-  noteOptions: []
+  defaultNote: ''
 };
 
 export default function HomeScreen() {
@@ -41,13 +42,14 @@ export default function HomeScreen() {
   const router = useRouter();
   const [settings, setSettings] = useState<SettingRow>(fallbackSettings);
   const [recipientName, setRecipientName] = useState('');
-  const [note, setNote] = useState('ご飲食代');
+  const [note, setNote] = useState('');
   const [amount, setAmount] = useState('');
   const [issuedDate] = useState(format(new Date(), 'yyyy年MM月dd日'));
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [receiptNo, setReceiptNo] = useState<number | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [defaultNote, setDefaultNote] = useState('');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -55,20 +57,25 @@ export default function HomeScreen() {
     }
   }, [user, loading]);
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      if (user) {
-        const docRef = doc(db, 'users', user.uid, 'settings', 'info');
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setSettings(docSnap.data() as SettingRow);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchSettings = async () => {
+        if (user) {
+          const docRef = doc(db, 'users', user.uid, 'settings', 'info');
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data() as SettingRow;
+            setSettings(data);
+            setNote(data.defaultNote || 'ご飲食代');
+          }
         }
-      }
-    };
-    fetchSettings();
-  }, [user]);
+      };
+      fetchSettings();
+    }, [user])
+  );
 
   const handleReceiptCreation = async () => {
+    Keyboard.dismiss();
     if (!user) return;
     setIsCreating(true);
 
@@ -184,6 +191,7 @@ export default function HomeScreen() {
       });
 
       Alert.alert('成功', `領収書 No.${no} を保存しました`);
+      setAmount('')
       setShowModal(true);
     } catch (error) {
       console.error('エラー:', error);
@@ -196,7 +204,6 @@ export default function HomeScreen() {
   return (
     <>
     <SafeAreaView  style={{ backgroundColor: '#A1CEDC', alignItems: 'center', margin:0, flex:1 }} >
-        {/* <ParallaxScrollView> */}
           <ThemedView style={styles.titleContainer}>
             <ThemedText type="title">領収書作成</ThemedText>
           </ThemedView>
@@ -240,7 +247,6 @@ export default function HomeScreen() {
               <Text style={styles.buttonText}>領収書作成</Text>
             </Pressable>
           </View>
-        {/* </ParallaxScrollView> */}
     </SafeAreaView>
       
 

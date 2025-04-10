@@ -15,6 +15,8 @@ export default function SettingScreen() {
   const [invoiceNumber, setInvoiceNumber] = useState('');
   const [logoUri, setLogoUri] = useState('');
   const [sealUri, setSealUri] = useState('');
+  const [defaultNote, setDefaultNote] = useState('');
+
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -30,6 +32,7 @@ export default function SettingScreen() {
           setInvoiceNumber(data.invoiceNumber);
           setLogoUri(data.logoUri);
           setSealUri(data.sealUri);
+          setDefaultNote(data.defaultNote || 'ご飲食代');
         }
       }
     };
@@ -59,7 +62,8 @@ export default function SettingScreen() {
         phone,
         invoiceNumber,
         logoUri,
-        sealUri
+        sealUri,
+        defaultNote 
       });
       alert('保存しました');
     }
@@ -96,6 +100,9 @@ export default function SettingScreen() {
             {sealUri ? <Image source={{ uri: sealUri }} style={styles.previewImage} /> : null}
           </View>
         </View>
+
+        <Text style={styles.label}>但し書きのデフォルト値</Text>
+        <TextInput style={styles.input} value={defaultNote} onChangeText={setDefaultNote} />
 
         {/* <Text style={styles.label}>ロゴ画像と電子印鑑</Text>
         <View style={styles.imageRow}>
