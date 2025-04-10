@@ -17,7 +17,7 @@ export const initIAP = async () => {
 
 export const getSubscriptions = async () => {
   try {
-    const subscriptions = await RNIap.getSubscriptions({ skus: itemSkus }); // ← 修正
+    const subscriptions = await RNIap.getSubscriptions({ skus: itemSkus });
     return subscriptions;
   } catch (err) {
     console.warn('サブスクリプション取得エラー:', err);
