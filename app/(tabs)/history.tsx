@@ -141,6 +141,9 @@ export default function HistoryScreen() {
         contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 16 }}
         ListHeaderComponent={
           <>
+            <ThemedView style={{ marginTop: 20, marginBottom: 20 }}>
+              <ThemedText type="title" style={{ backgroundColor: '#A1CEDC', textAlign: 'center', padding: 5 }}>作成済み領収書</ThemedText>
+            </ThemedView>
             <Pressable onPress={() => setShowSearch(prev => !prev)} style={{ padding: 10, backgroundColor: '#fff', borderRadius: 8, marginTop: 16 }}>
               <Text style={{ fontSize: 16 }}>{showSearch ? '▲ 絞り込みを閉じる' : '▼ 絞り込みを開く'}</Text>
             </Pressable>
