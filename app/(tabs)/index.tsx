@@ -15,6 +15,9 @@ import styles from '@/scripts/styles';
 import { WebView } from 'react-native-webview'; // 冒頭に追加
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import AdBanner from '@/components/AdBanner';
+import { MobileAds } from 'react-native-google-mobile-ads';
+
 
 interface SettingRow {
   storeName: string;
@@ -51,11 +54,21 @@ export default function HomeScreen() {
   const [showModal, setShowModal] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [defaultNote, setDefaultNote] = useState('');
+  // // // AdMob 初期化（最初の一回のみ）
+  // useEffect(() => {
+  //   MobileAds()
+  //     .initialize()
+  //     .then(adapterStatuses => {
+  //       console.log('✅ AdMob initialized', adapterStatuses);
+  //     });
+  // }, []);
+  
 
   useEffect(() => {
     if (!loading && !user) {
       router.replace('/(auth)/login');
     }
+    
   }, [user, loading]);
 
   useFocusEffect(
@@ -207,6 +220,7 @@ export default function HomeScreen() {
   return (
     <>
     <SafeAreaView  style={{ backgroundColor: '#A1CEDC', alignItems: 'center', margin:0, flex:1 }} >
+        <AdBanner />
           <ThemedView style={styles.titleContainer}>
             <ThemedText type="title">領収書作成</ThemedText>
           </ThemedView>
@@ -218,6 +232,8 @@ export default function HomeScreen() {
                 style={styles.Input_input}
                 value={recipientName}
                 onChangeText={setRecipientName}
+                placeholder="空欄可"
+                placeholderTextColor="#666"
               />
             </SafeAreaView>
           </ThemedView>

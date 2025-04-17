@@ -17,6 +17,25 @@ export const GlobalStyles = StyleSheet.create({
 });
 
 export default StyleSheet.create({
+  baseBackground: {
+    backgroundColor: '#A1CEDC',
+  },
+  textPrimary: {
+    color: '#000000',
+  },
+
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+
+  welcome: {
+    fontSize: 20,
+    marginBottom: 24,
+  },
+
   container: {
     flex: 1,
     justifyContent: "center",
@@ -28,9 +47,9 @@ export default StyleSheet.create({
   },
   
   titleContainer: {
-    // flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#A1CEDC', 
+    backgroundColor: '#A1CEDC',
+    color: '#000000', 
     // gap: 6,
     // marginTop: 16,
     // marginBottom: 12,
@@ -41,6 +60,8 @@ export default StyleSheet.create({
 
   stepContainer: {
     // gap: 8,
+    backgroundColor: '#ffffff',
+    color: '#000000',
     alignItems: 'center',
     width:260,
     marginBottom: 16,
@@ -51,20 +72,25 @@ export default StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#000000',
     // marginBottom: 16,
     textAlign: 'center',
     padding: 10
   },
 
   input: {
-    borderWidth: 1,
+    backgroundColor: '#ffffff',
+    color: '#000000',
     borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
-    marginVertical: 10,
+    borderWidth: 1,
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
   },
 
   Input_container: {
+    backgroundColor: '#ffffff',
+    color: '#000000',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
@@ -101,7 +127,7 @@ export default StyleSheet.create({
   },
 
   card: {
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     padding: 16,
     borderRadius: 8,
     marginHorizontal: 16,
@@ -111,6 +137,13 @@ export default StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
+
+    backgroundColor: '#ffffff',
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    // padding: 12,
+    // marginVertical: 6,
   },
 
   cardTitle: {
@@ -125,6 +158,7 @@ export default StyleSheet.create({
     left: -35,
     color: "#2525ff",
   },
+  
 
   reactLogo: {
     height: 100,
@@ -156,4 +190,46 @@ export default StyleSheet.create({
     color: 'black',
     paddingRight: 30,
   },
+
+
 });
+
+export const settingStyles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    marginBottom: 4,
+    fontWeight: 'bold'
+  },
+  imageRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  imageBlock: {
+    flex: 1,
+    marginRight: 10
+  },
+  imagePicker: {
+    backgroundColor: '#eee',
+    padding: 10,
+    borderRadius: 6,
+    alignItems: 'center',
+    marginBottom: 8
+  },
+  
+  imagePickerText: {
+    color: '#333'
+  },
+  previewImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    marginBottom: 20,
+    alignSelf: 'center'
+  },
+  saveContainer: {
+    padding: 16,
+    borderTopWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#fff'
+  },
+})

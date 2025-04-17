@@ -5,6 +5,9 @@ import { useAuth } from '@/context/AuthContext';
 import { db, storage } from '@/scripts/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import AdBanner from '@/components/AdBanner';
+
+
 
 export default function SettingScreen() {
   const { user } = useAuth();
@@ -72,8 +75,9 @@ export default function SettingScreen() {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <SafeAreaView>
-        
+      <AdBanner />  
       </SafeAreaView>
+
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <Text style={styles.heading1}>設定画面</Text>
         <Text style={styles.label}>店舗名</Text>
@@ -84,47 +88,33 @@ export default function SettingScreen() {
 
         <Text style={styles.label}>住所2</Text>
         <TextInput style={styles.input} value={address2} onChangeText={setAddress2} />
-
-        <Text style={styles.label}>電話番号</Text>
-        <TextInput style={styles.input} value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
-
-        <Text style={styles.label}>インボイス番号</Text>
-        <TextInput style={styles.input} value={invoiceNumber} onChangeText={setInvoiceNumber} />
-
-        <Text style={styles.label}>電子印鑑</Text>
+        
         <View style={styles.imageRow}>
           <View style={styles.imageBlock}>
+            <Text style={styles.label}>電話番号</Text>
+            <TextInput style={styles.input} value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
+            <Text style={styles.label}>インボイス番号</Text>
+            <TextInput style={styles.input} value={invoiceNumber} onChangeText={setInvoiceNumber} />
+            <Text style={styles.label}>但し書きのデフォルト値</Text>
+            <TextInput style={styles.input} value={defaultNote} onChangeText={setDefaultNote} />
+          </View>
+
+          <View style={styles.imageBlock}>
+          <Text style={styles.label}>電子印鑑</Text>
             <TouchableOpacity onPress={() => handleImagePick(setSealUri, 'seal.png')} style={styles.imagePicker}>
               <Text style={styles.imagePickerText}>印鑑を選択</Text>
             </TouchableOpacity>
             {sealUri ? <Image source={{ uri: sealUri }} style={styles.previewImage} /> : null}
           </View>
         </View>
-
-        <Text style={styles.label}>但し書きのデフォルト値</Text>
-        <TextInput style={styles.input} value={defaultNote} onChangeText={setDefaultNote} />
-
-        {/* <Text style={styles.label}>ロゴ画像と電子印鑑</Text>
-        <View style={styles.imageRow}>
-          <View style={styles.imageBlock}>
-            <TouchableOpacity onPress={() => handleImagePick(setLogoUri, 'logo.png')} style={styles.imagePicker}>
-              <Text style={styles.imagePickerText}>ロゴを選択</Text>
-            </TouchableOpacity>
-            {logoUri ? <Image source={{ uri: logoUri }} style={styles.previewImage} /> : null}
-          </View>
-          <View style={styles.imageBlock}>
-            <TouchableOpacity onPress={() => handleImagePick(setSealUri, 'seal.png')} style={styles.imagePicker}>
-              <Text style={styles.imagePickerText}>印鑑を選択</Text>
-            </TouchableOpacity>
-            {sealUri ? <Image source={{ uri: sealUri }} style={styles.previewImage} /> : null}
-          </View>
-        </View> */}
 
         <View style={styles.saveContainer}>
           <Button title="保存" onPress={handleSave} />
         </View>
-      </ScrollView>     
+      </ScrollView>
+      
     </KeyboardAvoidingView>
+    
   );
 }
 
@@ -182,5 +172,12 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: '#ddd',
     backgroundColor: '#fff'
-  }
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    // marginBottom: 16,
+    textAlign: 'center',
+    padding: 10
+  },
 });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
-import { ThemeProvider } from '@react-navigation/native';
+// import { ThemeProvider } from '@react-navigation/native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
@@ -35,11 +35,11 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <AuthProvider>
         <StatusBar style="auto" />
         <Stack screenOptions={{ headerShown: false }} />
       </AuthProvider>
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 }

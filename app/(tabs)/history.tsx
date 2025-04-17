@@ -13,6 +13,7 @@ import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
+import AdBanner from '@/components/AdBanner';
 
 interface ReceiptMeta {
   recipientName: string;
@@ -45,6 +46,7 @@ export default function HistoryScreen() {
 
   const [showModal, setShowModal] = useState(false);
   const [selectedPdfUrl, setSelectedPdfUrl] = useState<string | null>(null);
+  const [selectedCreatedAt, setSelectedCreatedAt] = useState<string | null>(null);
 
   const fetchReceipts = async () => {
     if (!user) return;
@@ -107,18 +109,29 @@ export default function HistoryScreen() {
     setFilteredReceipts(receipts);
   };
 
-  const renderItem = ({ item }: { item: ReceiptMeta }) => (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() => {
-        setSelectedPdfUrl(item.downloadUrl);
-        setShowModal(true);
-      }}>
-      <Text style={styles.cardTitle}>領収書 No.{item.no ?? '-'} - {item.recipientName}様</Text>
-      <Text>金額: ¥{item.totalAmount.toLocaleString()}</Text>
-      <Text>日付: {item.issuedDate}</Text>
-    </TouchableOpacity>
-  );
+  const renderItem = ({ item }: { item: ReceiptMeta }) => {
+    const timestamp = item.createdAt
+      ? new Date(item.createdAt.seconds * 1000 + item.createdAt.nanoseconds / 1e6)
+      : null;
+    const timestampStr = timestamp
+      ? format(timestamp, 'yyyy-MM-dd HH:mm:ss.SS')
+      : 'タイムスタンプ不明';
+
+    return (
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => {
+          setSelectedPdfUrl(item.downloadUrl);
+          setSelectedCreatedAt(timestampStr);
+          setShowModal(true);
+        }}>
+        <Text style={styles.cardTitle}>領収書 No.{item.no ?? '-'} - {item.recipientName}様</Text>
+        <Text>金額: ¥{item.totalAmount.toLocaleString()}</Text>
+        <Text>日付: {item.issuedDate}</Text>
+        <Text>作成日時: {timestampStr}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   const handleShare = async (url: string) => {
     if (!(await Sharing.isAvailableAsync())) {
@@ -134,6 +147,8 @@ export default function HistoryScreen() {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#A1CEDC', flex: 1 }}>
+      <AdBanner />
+      
       <FlatList
         data={filteredReceipts}
         keyExtractor={(_, index) => index.toString()}
@@ -141,22 +156,21 @@ export default function HistoryScreen() {
         contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 16 }}
         ListHeaderComponent={
           <>
-            <ThemedView style={{ marginTop: 20, marginBottom: 20 }}>
+            <ThemedView style={{ marginTop: 20, marginBottom: 0 }}>
               <ThemedText type="title" style={{ backgroundColor: '#A1CEDC', textAlign: 'center', padding: 5 }}>作成済み領収書</ThemedText>
             </ThemedView>
+
             <Pressable onPress={() => setShowSearch(prev => !prev)} style={{ padding: 10, backgroundColor: '#fff', borderRadius: 8, marginTop: 16 }}>
-              <Text style={{ fontSize: 16 }}>{showSearch ? '▲ 絞り込みを閉じる' : '▼ 絞り込みを開く'}</Text>
+              <Text style={{ fontSize: 16 }}>{showSearch ? '▲ 検索・フィルター設定' : '▼ 検索・フィルター設定'}</Text>
             </Pressable>
 
             {showSearch && (
               <View style={{ backgroundColor: '#fff', padding: 16, borderRadius: 8, marginTop: 10 }}>
-                <ThemedText type="subtitle">検索・フィルター</ThemedText>
-
                 <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
                   <TouchableOpacity onPress={() => setShowDatePicker(true)} style={[styles.input, { flex: 1, justifyContent: 'center' }]}>
                     <Text>{searchDate ? format(searchDate, 'yyyy年MM月dd日') : '日付を選択'}</Text>
                   </TouchableOpacity>
-                  <TextInput placeholder="宛名" value={searchName} onChangeText={setSearchName} style={[styles.input, { flex: 1 }]} />
+                  <TextInput placeholder="宛名" value={searchName} onChangeText={setSearchName} style={[styles.input, { flex: 1 }]} placeholderTextColor="#666" />
                 </View>
 
                 {showDatePicker && (
@@ -172,8 +186,8 @@ export default function HistoryScreen() {
                 )}
 
                 <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
-                  <TextInput placeholder="最低金額" value={minAmount} onChangeText={setMinAmount} keyboardType="numeric" style={[styles.input, { flex: 1 }]} />
-                  <TextInput placeholder="最高金額" value={maxAmount} onChangeText={setMaxAmount} keyboardType="numeric" style={[styles.input, { flex: 1 }]} />
+                  <TextInput placeholder="最低金額" value={minAmount} onChangeText={setMinAmount} keyboardType="numeric" style={[styles.input, { flex: 1 }]} placeholderTextColor="#666" />
+                  <TextInput placeholder="最高金額" value={maxAmount} onChangeText={setMaxAmount} keyboardType="numeric" style={[styles.input, { flex: 1 }]} placeholderTextColor="#666" />
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10 }}>
@@ -184,15 +198,12 @@ export default function HistoryScreen() {
                 </View>
               </View>
             )}
-
-            <ThemedView style={{ marginTop: 20, marginBottom: 20 }}>
-              <ThemedText type="title" style={{ backgroundColor: '#A1CEDC', textAlign: 'center', padding: 5 }}>作成済み領収書</ThemedText>
-            </ThemedView>
           </>
         }
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListEmptyComponent={<Text style={{ padding: 20 }}>領収書が見つかりません</Text>}
       />
+      
 
       <Modal visible={showModal} transparent animationType="slide">
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.6)' }}>
@@ -204,7 +215,11 @@ export default function HistoryScreen() {
               {selectedPdfUrl ? (
                 <>
                   <QRCode value={selectedPdfUrl} size={100} />
-                  <Text style={{ marginTop: 10 }}>QRコードを読み取ってPDFを開く</Text>
+                  {selectedCreatedAt && (
+                    <Text style={{ marginTop: 10, fontSize: 14, color: '#333' }}>
+                      作成日時: {selectedCreatedAt}
+                    </Text>
+                  )}
 
                   <Pressable
                     onPress={() => handleShare(selectedPdfUrl)}
