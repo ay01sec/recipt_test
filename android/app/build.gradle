@@ -86,9 +86,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.biza9749.recipt_test'
+    namespace 'com.improvebiz.receiptmaker'
     defaultConfig {
-        applicationId 'com.biza9749.recipt_test'
+        applicationId 'com.improvebiz.receiptmaker'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -123,6 +123,16 @@ android {
     }
     androidResources {
         ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:!CVS:!thumbs.db:!picasa.ini:!*~'
+    }
+    
+    flavorDimensions "store"
+    productFlavors {
+    play {
+        dimension "store"
+    }
+    amazon {
+        dimension "store"
+    }
     }
 }
 

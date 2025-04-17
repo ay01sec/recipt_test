@@ -14,7 +14,15 @@ export default ({ config }) => {
       ...appJson.expo?.ios,
       bundleIdentifier: 'com.improvebiz.receiptmaker',
     },
-
+    "android": {
+      "package": "com.improvebiz.receiptmaker",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": []
+    },
     splash: {
       image: './assets/icon.png',
       resizeMode: 'contain',
