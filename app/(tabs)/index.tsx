@@ -15,8 +15,6 @@ import styles from '@/scripts/styles';
 import { WebView } from 'react-native-webview'; // 冒頭に追加
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-import AdBanner from '@/components/AdBanner';
-import { MobileAds } from 'react-native-google-mobile-ads';
 
 
 interface SettingRow {
@@ -220,7 +218,7 @@ export default function HomeScreen() {
   return (
     <>
     <SafeAreaView  style={{ backgroundColor: '#A1CEDC', alignItems: 'center', margin:0, flex:1 }} >
-        <AdBanner />
+        {/* <AdBanner /> */}
           <ThemedView style={styles.titleContainer}>
             <ThemedText type="title">領収書作成</ThemedText>
           </ThemedView>

@@ -5,7 +5,6 @@ import { useAuth } from '@/context/AuthContext';
 import { db, storage } from '@/scripts/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import AdBanner from '@/components/AdBanner';
 
 
 
@@ -75,7 +74,7 @@ export default function SettingScreen() {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <SafeAreaView>
-      <AdBanner />  
+      {/* <AdBanner />   */}
       </SafeAreaView>
 
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">

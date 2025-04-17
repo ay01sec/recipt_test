@@ -33,15 +33,6 @@ export default ({ config }) => {
           },
         },
       ],
-      [
-        'react-native-google-mobile-ads',
-        {
-          iosAppId: 'ca-app-pub-1824309517034681~6657523639',
-          androidAppId: 'ca-app-pub-1824309517034681~8472210325',
-          // iosAppId: 'ca-app-pub-3940256099942544/6300978111',
-          // androidAppId: 'ca-app-pub-3940256099942544/6300978111',
-        },
-      ],
     ],
 
     extra: {

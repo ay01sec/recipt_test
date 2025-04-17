@@ -13,7 +13,6 @@ import { WebView } from 'react-native-webview';
 import { Ionicons } from '@expo/vector-icons';
 import * as Sharing from 'expo-sharing';
 import * as FileSystem from 'expo-file-system';
-import AdBanner from '@/components/AdBanner';
 
 interface ReceiptMeta {
   recipientName: string;
@@ -147,7 +146,7 @@ export default function HistoryScreen() {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#A1CEDC', flex: 1 }}>
-      <AdBanner />
+      {/* <AdBanner /> */}
       
       <FlatList
         data={filteredReceipts}
