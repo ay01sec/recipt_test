@@ -30,7 +30,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff',
   },
-
+  appName: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    color: '#333',
+    textAlign: 'center',
+  },
   welcome: {
     fontSize: 20,
     marginBottom: 24,

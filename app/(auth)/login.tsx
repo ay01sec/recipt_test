@@ -49,6 +49,7 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.appName}>receiptQR</Text>
       <Text style={styles.title}>ログイン</Text>
 
       <TextInput

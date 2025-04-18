@@ -5,7 +5,7 @@ export default ({ config }) => {
     ...config,
     ...appJson.expo, // app.json の expo 設定をベースに
 
-    name: 'recipt_test',
+    name: 'receiptQR-領収書作成アプリ',
     slug: 'recipt_test',
     scheme: 'receiptmaker',
     icon: './assets/icon.png',
@@ -14,14 +14,14 @@ export default ({ config }) => {
       ...appJson.expo?.ios,
       bundleIdentifier: 'com.improvebiz.receiptmaker',
     },
-    "android": {
-      "package": "com.improvebiz.receiptmaker",
-      "versionCode": 1,
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#FFFFFF"
+    android: {
+      package: "com.improvebiz.receiptmaker",
+      versionCode: 1,
+      adaptiveIcon: {
+        foregroundImage: "./assets/icon.png",
+        backgroundColor: "#FFFFFF"
       },
-      "permissions": []
+      permissions: []
     },
     splash: {
       image: './assets/icon.png',
@@ -35,6 +35,9 @@ export default ({ config }) => {
         {
           ios: {
             useModularHeaders: true,
+          },
+          android: {
+            kotlinVersion: '1.8.10',
           },
           experiments: {
             newArchEnabled: true,
