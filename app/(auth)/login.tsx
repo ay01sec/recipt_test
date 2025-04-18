@@ -1,8 +1,5 @@
-// app/(auth)/login.tsx
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, Alert, ActivityIndicator } from 'react-native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '@/scripts/firebase';
 import styles from '@/scripts/styles';
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/context/AuthContext';
@@ -12,14 +9,14 @@ export default function LoginScreen() {
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const { user, loading } = useAuth();
+  const { user, loading, login } = useAuth();
   const router = useRouter();
 
-  useEffect(() => {
-    if (!loading && user) {
-      router.replace('/');
-    }
-  }, [user, loading]);
+  // useEffect(() => {
+  //   if (!loading && user) {
+  //     router.replace('/');
+  //   }
+  // }, [user, loading]);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -29,7 +26,8 @@ export default function LoginScreen() {
 
     try {
       setSubmitting(true);
-      await signInWithEmailAndPassword(auth, email, password);
+      await login(email, password);
+      router.replace('/');
     } catch (error) {
       console.error('ログインエラー:', error);
       Alert.alert('ログイン失敗', 'メールアドレスまたはパスワードが正しくありません。');
@@ -55,6 +53,7 @@ export default function LoginScreen() {
       <TextInput
         style={styles.Input_input}
         placeholder="メールアドレス"
+        placeholderTextColor="#888"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -64,6 +63,7 @@ export default function LoginScreen() {
       <TextInput
         style={styles.Input_input}
         placeholder="パスワード"
+        placeholderTextColor="#888"
         value={password}
         onChangeText={setPassword}
         secureTextEntry

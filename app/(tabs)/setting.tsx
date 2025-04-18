@@ -1,10 +1,11 @@
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput,Button, Image, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, TextInput,Button, Image, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, TouchableOpacity, SafeAreaView, Pressable, Alert } from 'react-native';
 import { useAuth } from '@/context/AuthContext';
 import { db, storage } from '@/scripts/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { useRouter } from 'expo-router';
 
 
 
@@ -18,7 +19,10 @@ export default function SettingScreen() {
   const [logoUri, setLogoUri] = useState('');
   const [sealUri, setSealUri] = useState('');
   const [defaultNote, setDefaultNote] = useState('');
+  const { logout } = useAuth();
+  const router = useRouter();
 
+  
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -40,6 +44,15 @@ export default function SettingScreen() {
     };
     fetchSettings();
   }, [user]);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.replace('/(auth)/login');
+    } catch (error) {
+      Alert.alert('エラー', 'ログアウトに失敗しました。');
+    }
+  };
 
   const handleImagePick = async (setter: (url: string) => void, path: string) => {
     const result = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.Images, quality: 1 });
@@ -110,6 +123,9 @@ export default function SettingScreen() {
         <View style={styles.saveContainer}>
           <Button title="保存" onPress={handleSave} />
         </View>
+        <Pressable style={[styles.buttonStyle, { marginTop: 20 }]} onPress={handleLogout}>
+          <Text style={styles.buttonText}>ログアウト</Text>
+        </Pressable>
       </ScrollView>
       
     </KeyboardAvoidingView>
@@ -118,6 +134,16 @@ export default function SettingScreen() {
 }
 
 const styles = StyleSheet.create({
+  buttonStyle:{
+    padding: 16,
+    // borderTopWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#fff'
+  },
+  buttonText:{
+    color:'red'
+  },
+
   container: {
     paddingTop: 40,
     padding: 20,

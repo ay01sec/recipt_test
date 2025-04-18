@@ -30,6 +30,7 @@ export default ({ config }) => {
     },
 
     plugins: [
+      "expo-secure-store",
       [
         'expo-build-properties',
         {
